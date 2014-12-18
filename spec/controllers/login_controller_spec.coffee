@@ -15,5 +15,5 @@ describe "controller: LoginController", ->
     Given -> @$httpBackend.whenPOST('/login', @scope.credentials).respond(200)
     When  -> @scope.login()
     When  -> @$httpBackend.flush()
-    Then "LoginController should redirect you to /home", ->
-      expect(@redirect).toHaveBeenCalledWith('/home')
+    Then "LoginController should redirect you to /game", ->
+      expect(@redirect).toHaveBeenCalledWith('/game')

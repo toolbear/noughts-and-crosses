@@ -7,9 +7,9 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     controller: 'LoginController'
   });
 
-  $routeProvider.when('/home', {
-    templateUrl: 'home.html',
-    controller: 'HomeController'
+  $routeProvider.when('/game', {
+    templateUrl: 'game.html',
+    controller: 'GameController'
   });
 
   $routeProvider.when('/$resource/list-of-books', {
