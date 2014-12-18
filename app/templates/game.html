@@ -1,0 +1,21 @@
+<div id="game" class="row">
+  <div class="large-6 large-offset-3">
+    <h2>Ready {{ player }}</h2>
+
+    <div class="alert-box">{{ message }}</div>
+
+    <ul id="board" class="small-block-grid-3 small-offset-1">
+      <li id="square-{{ square.id }}"
+        class="square"
+         title="{{ square.id }}"
+        ng-repeat="square in board"
+        ng-click="mark(square)">{{ square.mark }}</li>
+    </ul>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <button ng-click="logout()" class="button large expand radius">Log Out</button>
+      </div>
+    </div>
+  </div>
+</div>
