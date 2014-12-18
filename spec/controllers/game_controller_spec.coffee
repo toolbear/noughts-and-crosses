@@ -1,15 +1,16 @@
 describe "controller: GameController", ->
 
-  cross = "\u2573" # TODO: DRY with src
-
   Given -> module("app")
 
-  Given inject ($controller, $rootScope) ->
+  Given inject ($controller, $rootScope, MARKS) ->
     @scope    = $rootScope.$new()
-    $controller('GameController', {$scope: @scope})
+    @log = @scope.log = jasmine.createSpy("#log")
+    MARKS.nought = "O"
+    MARKS.cross  = "X"
+    $controller('GameController', {$scope: @scope, MARKS})
 
   Then -> @scope.player == "Player One"
-  And  -> @scope.message == "#{cross} to move"
+  And  -> @scope.message == "X to move"
   And  -> expect(@scope.board).toBeDefined()
 
   Invariant -> @scope.board.length == 9
@@ -28,6 +29,33 @@ describe "controller: GameController", ->
 
   describe "#mark()", ->
     Given -> @index = 0
-    When  -> @square = @scope.board[@index]
+    Given -> @square = @scope.board[@index]
+
     When  -> @scope.mark(@square)
-    Then  -> @square.mark == cross
+
+    Then  -> @square.mark == "X"
+    And   -> expect(@log).toHaveBeenCalledWith("Xa3")
+    And   -> @scope.message == "O to move"
+
+    describe "already marked", ->
+      Given -> @square.mark = "X"
+      Then  -> expect(@log).not.toHaveBeenCalled()
+
+    describe "marked by opponent", ->
+      Given -> @square.mark = "O"
+
+      Then  -> @square.mark == "O"
+      And   -> expect(@log).not.toHaveBeenCalled()
+
+    describe "switches to opponent mark", ->
+      Given -> @second_square = id: "c2"
+
+      When  -> @scope.mark(@second_square)
+
+      Then  -> @second_square.mark == "O"
+      And   -> @scope.message = "X to move"
+
+      describe "switches back to original player mark", ->
+        Given -> @third_square = id: "c3"
+        When  -> @scope.mark(@third_square)
+        Then  -> @third_square.mark == "X"
