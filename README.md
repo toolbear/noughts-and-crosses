@@ -11,6 +11,8 @@ Built with AngularJS using [Lineman](http://www.linemanjs.com).
 3. `npm install`
 4. `lineman run` or `./node_modules/.bin/lineman run` or `npm start`
 5. open your web browser to [localhost:8000](http://localhost:8000)
+6. login. Any username and password will do
+7. play!
 
 # Running Tests
 
