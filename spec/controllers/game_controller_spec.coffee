@@ -35,6 +35,7 @@ describe "controller: GameController", ->
 
     Then  -> @square.mark == "X"
     And   -> expect(@log).toHaveBeenCalledWith("Xa3")
+    And   -> @scope.message == "O to move"
 
     describe "already marked", ->
       Given -> @square.mark = "X"
