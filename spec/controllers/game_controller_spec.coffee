@@ -12,9 +12,16 @@ describe "controller: GameController", ->
   And  -> @scope.message == "#{cross} to move"
   And  -> expect(@scope.board).toBeDefined()
 
+  Invariant -> @scope.board.length == 9
+
   # TODO: smells of an implementation detail
   describe "board is a flattened 3x3 grid with algebraic notation", ->
+    When  -> @square = @scope.board[@index]
 
-    Then -> @scope.board.length == 9
-    And  -> @scope.board[0].id == 'a3'
-    And  -> @scope.board[8].id == 'c1'
+    describe "top-left", ->
+      Given -> @index = 0
+      Then -> @square.id == 'a3'
+
+    describe "bottom-right", ->
+      Given -> @index = 8
+      Then -> @square.id == 'c1'
