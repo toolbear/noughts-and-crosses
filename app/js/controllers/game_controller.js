@@ -1,5 +1,6 @@
 angular.module("app").controller('GameController', function($scope, $location, AuthenticationService, MARKS) {
 
+  var detectDraws;
   var current_player = 0;
   var player_marks = [MARKS.cross, MARKS.nought];
   $scope.player = "Player One";
@@ -16,9 +17,21 @@ angular.module("app").controller('GameController', function($scope, $location, A
       var mark = player_marks[current_player];
       square.mark = mark;
       $scope.log(mark + square.id);
-      current_player = ++current_player % 2;
-      $scope.message = player_marks[current_player] + " to move"; // TODO: DRY with a template
+
+      if (isStalemate()) {
+        $scope.message = "Game Over: It's a Draw";
+      } else {
+        current_player = ++current_player % 2;
+        $scope.message = player_marks[current_player] + " to move"; // TODO: DRY with a template
+      }
     }
+  };
+
+  /** assumption: winner detection found no winner */
+  isStalemate = function() {
+    return !_($scope.board).detect(function(square) {
+     return !square.mark; // true if unmarked
+    });
   };
 
   var onLogoutSuccess = function(response) {

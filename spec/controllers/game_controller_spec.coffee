@@ -59,3 +59,15 @@ describe "controller: GameController", ->
         Given -> @third_square = id: "c3"
         When  -> @scope.mark(@third_square)
         Then  -> @third_square.mark == "X"
+
+  describe "game ends in a draw", ->
+    Given ->
+      # XOX
+      # XOO
+      # OX_
+      for mark, i in "XOXXOOOX_"
+        @scope.board[i].mark = mark if mark != "_"
+
+    When  -> @scope.mark(@scope.board[8])
+
+    Then -> @scope.message == "Game Over: It's a Draw"
