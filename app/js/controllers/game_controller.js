@@ -1,4 +1,9 @@
-angular.module("app").controller('GameController', function($scope, $location, AuthenticationService, MARKS) {
+angular.module("app").controller('GameController', function(
+  $scope,
+  $location,
+  AuthenticationService,
+  MARKS,
+  WINNING_PLAYS) {
 
   var detectWin, detectStalemate;
   var game_over = false;
@@ -38,12 +43,7 @@ angular.module("app").controller('GameController', function($scope, $location, A
     }).map(function(square) {
       return square.id;
     }).value();
-    var winning = [
-      ["a1", "b1", "c1"],
-      ["a2", "b2", "c2"],
-      ["a3", "b3", "c3"],
-    ];
-    return _(winning).detect(function(candidate) {
+    return _(WINNING_PLAYS).detect(function(candidate) {
       return _.intersection(mine, candidate).length === 3;
     });
   };
@@ -72,3 +72,13 @@ angular.module("app").constant('xxMARKS', {
   nought: "\u2b55",
   cross: "\u274c"
 });
+angular.module("app").constant('WINNING_PLAYS', [
+  ["a3", "b3", "c3"],
+  ["a2", "b2", "c2"],
+  ["a1", "b1", "c1"],
+  ["a3", "a2", "a1"],
+  ["b3", "b2", "b1"],
+  ["c3", "c2", "c1"],
+  ["a3", "b2", "c1"],
+  ["c3", "b2", "a1"]
+]);
