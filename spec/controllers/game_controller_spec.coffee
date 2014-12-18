@@ -3,33 +3,33 @@ describe "controller: GameController", ->
   Given -> module("app")
 
   Given inject ($controller, $rootScope, MARKS) ->
-    @scope    = $rootScope.$new()
-    @log = @scope.log = jasmine.createSpy("#log")
+    @scope       = $rootScope.$new()
+    @log         = @scope.log = jasmine.createSpy("#log")
     MARKS.nought = "O"
     MARKS.cross  = "X"
     $controller('GameController', {$scope: @scope, MARKS})
 
-  Then -> @scope.player == "Player One"
-  And  -> @scope.message == "X to move"
-  And  -> expect(@scope.board).toBeDefined()
+  Given -> @board = @scope.board
 
-  Invariant -> @scope.board.length == 9
+  Then  -> @scope.player == "Player One"
+  And   -> @scope.message == "X to move"
 
-  # TODO: smells of an implementation detail
+  Invariant -> @board.length == 9
+
   describe "board is a flattened 3x3 grid with algebraic notation", ->
-    When  -> @square = @scope.board[@index]
+    When  -> @square = @board[@index]
 
     describe "top-left", ->
       Given -> @index = 0
-      Then -> @square.id == 'a3'
+      Then  -> @square.id == 'a3'
 
     describe "bottom-right", ->
       Given -> @index = 8
-      Then -> @square.id == 'c1'
+      Then  -> @square.id == 'c1'
 
   describe "#mark()", ->
     Given -> @index = 0
-    Given -> @square = @scope.board[@index]
+    Given -> @square = @board[@index]
 
     When  -> @scope.mark(@square)
 
@@ -48,17 +48,17 @@ describe "controller: GameController", ->
       And   -> expect(@log).not.toHaveBeenCalled()
 
     describe "switches to opponent mark", ->
-      Given -> @second_square = id: "c2"
+      Given -> @secondSquare = id: "c2"
 
-      When  -> @scope.mark(@second_square)
+      When  -> @scope.mark(@secondSquare)
 
-      Then  -> @second_square.mark == "O"
+      Then  -> @secondSquare.mark == "O"
       And   -> @scope.message = "X to move"
 
       describe "switches back to original player mark", ->
-        Given -> @third_square = id: "c3"
-        When  -> @scope.mark(@third_square)
-        Then  -> @third_square.mark == "X"
+        Given -> @thirdSquare = id: "c3"
+        When  -> @scope.mark(@thirdSquare)
+        Then  -> @thirdSquare.mark == "X"
 
   describe "game ends in a draw", ->
     Given ->
@@ -66,11 +66,11 @@ describe "controller: GameController", ->
                XOO
                OX_"
       for mark, i in setup.replace /\s/g, ""
-        @scope.board[i].mark = mark if mark != "_"
+        @board[i].mark = mark if mark != "_"
 
-    When  -> @scope.mark(@scope.board[8])
+    When  -> @scope.mark(@board[8])
 
-    Then -> @scope.message == "Game Over: It's a Draw"
+    Then  -> @scope.message == "Game Over: It's a Draw"
 
   describe "winning", ->
     Given ->
@@ -78,23 +78,21 @@ describe "controller: GameController", ->
                O__
                OOX"
       for mark, i in setup.replace /\s/g, ""
-        @scope.board[i].mark = mark if mark != "_"
+        @board[i].mark = mark if mark != "_"
 
     describe "3 across", ->
-      When  -> @scope.mark(@scope.board[1])
+      When  -> @scope.mark(@board[1])
       Then  -> @scope.message == "Winner: X"
 
       describe "keep playing", ->
-        Given -> @square = @scope.board[4]
+        Given -> @square = @board[4]
         When  -> @scope.mark(@square)
         Then  -> expect(@square.mark).toBeUndefined()
 
     describe "3 down", ->
-      When  -> @scope.mark(@scope.board[5])
+      When  -> @scope.mark(@board[5])
       Then  -> @scope.message == "Winner: X"
 
     describe "3 diagonal", ->
-      When  -> @scope.mark(@scope.board[4])
+      When  -> @scope.mark(@board[4])
       Then  -> @scope.message == "Winner: X"
-
-    xdescribe "full board"
