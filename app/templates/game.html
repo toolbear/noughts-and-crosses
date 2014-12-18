@@ -1,19 +1,21 @@
 <div id="game" class="row">
   <div class="large-6 large-offset-3">
-    <h2>Welcome to the {{ title }} page!</h2>
+    <h2>Ready {{ player }}</h2>
 
     <div class="alert-box">{{ message }}</div>
 
-    <ul id="board" class="small-block-grid-3">
-      <li>0,0</li>
-      <li>0,1</li>
-      <li>0,2</li>
-      <li>1,0</li>
-      <li>1,1</li>
-      <li>1,2</li>
-      <li>2,0</li>
-      <li>2,1</li>
-      <li>2,2</li>
+    <ul id="board" class="small-block-grid-3 small-offset-1">
+      <li class="square">{{ cross }}</li>
+      <li class="square">{{ nought }}</li>
+      <li class="square"></li>
+
+      <li class="square"></li>
+      <li class="square"></li>
+      <li class="square"></li>
+
+      <li class="square">{{ cross }}</li>
+      <li class="square">{{ nought }}</li>
+      <li class="square"></li>
     </ul>
 
     <div class="row">
