@@ -16,7 +16,6 @@ describe "controller: GameController", ->
 
   Invariant -> @board.length == 9
 
-  # TODO: smells of an implementation detail
   describe "board is a flattened 3x3 grid with algebraic notation", ->
     When  -> @square = @board[@index]
 
