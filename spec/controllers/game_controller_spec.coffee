@@ -3,16 +3,16 @@ describe "controller: GameController", ->
   Given -> module("app")
 
   Given inject ($controller, $rootScope, MARKS) ->
-    @scope    = $rootScope.$new()
-    @log = @scope.log = jasmine.createSpy("#log")
+    @scope       = $rootScope.$new()
+    @log         = @scope.log = jasmine.createSpy("#log")
     MARKS.nought = "O"
     MARKS.cross  = "X"
     $controller('GameController', {$scope: @scope, MARKS})
 
   Given -> @board = @scope.board
 
-  Then -> @scope.player == "Player One"
-  And  -> @scope.message == "X to move"
+  Then  -> @scope.player == "Player One"
+  And   -> @scope.message == "X to move"
 
   Invariant -> @board.length == 9
 
@@ -21,11 +21,11 @@ describe "controller: GameController", ->
 
     describe "top-left", ->
       Given -> @index = 0
-      Then -> @square.id == 'a3'
+      Then  -> @square.id == 'a3'
 
     describe "bottom-right", ->
       Given -> @index = 8
-      Then -> @square.id == 'c1'
+      Then  -> @square.id == 'c1'
 
   describe "#mark()", ->
     Given -> @index = 0
@@ -70,7 +70,7 @@ describe "controller: GameController", ->
 
     When  -> @scope.mark(@board[8])
 
-    Then -> @scope.message == "Game Over: It's a Draw"
+    Then  -> @scope.message == "Game Over: It's a Draw"
 
   describe "winning", ->
     Given ->
