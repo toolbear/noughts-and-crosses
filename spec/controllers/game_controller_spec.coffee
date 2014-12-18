@@ -96,5 +96,3 @@ describe "controller: GameController", ->
     describe "3 diagonal", ->
       When  -> @scope.mark(@scope.board[4])
       Then  -> @scope.message == "Winner: X"
-
-    xdescribe "full board"
