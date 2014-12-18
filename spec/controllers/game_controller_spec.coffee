@@ -1,6 +1,8 @@
 describe "controller: GameController", ->
 
-  cross = "\u2573" # TODO: DRY with src
+  # TODO: DRY with src
+  cross  = "\u2573"
+  nought = "\u25ef"
 
   Given -> module("app")
 
@@ -29,9 +31,19 @@ describe "controller: GameController", ->
 
   describe "#mark()", ->
     Given -> @index = 0
+    Given -> @square = @scope.board[@index]
 
-    When  -> @square = @scope.board[@index]
     When  -> @scope.mark(@square)
 
     Then  -> @square.mark == cross
     And   -> expect(@log).toHaveBeenCalledWith("\u2573a3")
+
+    describe "already marked", ->
+      Given -> @square.mark = cross
+      Then  -> expect(@log).not.toHaveBeenCalled()
+
+    describe "marked by opponent", ->
+      Given -> @square.mark = nought
+
+      Then  -> @square.mark == nought
+      And   -> expect(@log).not.toHaveBeenCalled()
