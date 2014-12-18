@@ -13,7 +13,6 @@ describe "controller: GameController", ->
 
   Then -> @scope.player == "Player One"
   And  -> @scope.message == "X to move"
-  And  -> expect(@board).toBeDefined()
 
   Invariant -> @board.length == 9
 
