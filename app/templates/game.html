@@ -5,17 +5,10 @@
     <div class="alert-box">{{ message }}</div>
 
     <ul id="board" class="small-block-grid-3 small-offset-1">
-      <li class="square">{{ cross }}</li>
-      <li class="square">{{ nought }}</li>
-      <li class="square"></li>
-
-      <li class="square"></li>
-      <li class="square"></li>
-      <li class="square"></li>
-
-      <li class="square">{{ cross }}</li>
-      <li class="square">{{ nought }}</li>
-      <li class="square"></li>
+      <li id="square-{{ square.id }}"
+        class="square"
+         title="{{ square.id }}"
+        ng-repeat="square in board"></li>
     </ul>
 
     <div class="row">

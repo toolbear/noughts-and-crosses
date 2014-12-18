@@ -9,6 +9,11 @@ angular.module("app").controller('GameController', function($scope, $location, A
   $scope.message = cross + " to move";
   $scope.nought = nought;
   $scope.cross = cross;
+  $scope.board = _.flatten(_.map([3, 2, 1], function(file) {
+    return _.map(['a', 'b', 'c'], function(rank) {
+      return { id: ''+rank+file };
+    });
+  }));
 
   var onLogoutSuccess = function(response) {
     $location.path('/login');
