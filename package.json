@@ -1,0 +1,19 @@
+{
+  "name": "noughts-and-crosses",
+  "description": "The game of Noughts and Crosses",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Tim Taylor <tim@tool-man.org> (https://github.com/toolbear)",
+  "devDependencies": {
+    "coffee-script": "^1.6.3",
+    "jasmine-given": "^2.6.2",
+    "lineman": "^0.34.0",
+    "lineman-angular": "^0.3.0",
+    "lineman-less": "0.0.1",
+    "protractor": "^1.4.0"
+  },
+  "scripts": {
+    "start": "lineman run",
+    "test": "lineman spec-ci"
+  }
+}
