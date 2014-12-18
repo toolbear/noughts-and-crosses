@@ -1,6 +1,6 @@
 describe "controller: GameController", ->
 
-  cross = "\u274c"
+  cross = "\u2573" # TODO: DRY with src
 
   Given -> module("app")
 
