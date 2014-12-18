@@ -13,7 +13,7 @@ angular.module("app").controller('GameController', function($scope, $location, A
 
   $scope.mark = function(square) {
     if (!square.mark) {
-      var mark = MARKS.cross;
+      var mark = player_marks[current_player];
       square.mark = mark;
       $scope.log(mark + square.id);
       current_player = ++current_player % 2;

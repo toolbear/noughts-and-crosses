@@ -46,3 +46,16 @@ describe "controller: GameController", ->
 
       Then  -> @square.mark == "O"
       And   -> expect(@log).not.toHaveBeenCalled()
+
+    describe "switches to opponent mark", ->
+      Given -> @second_square = id: "c2"
+
+      When  -> @scope.mark(@second_square)
+
+      Then  -> @second_square.mark == "O"
+      And   -> @scope.message = "X to move"
+
+      describe "switches back to original player mark", ->
+        Given -> @third_square = id: "c3"
+        When  -> @scope.mark(@third_square)
+        Then  -> @third_square.mark == "X"
