@@ -9,15 +9,17 @@ describe "controller: GameController", ->
     MARKS.cross  = "X"
     $controller('GameController', {$scope: @scope, MARKS})
 
+  Given -> @board = @scope.board
+
   Then -> @scope.player == "Player One"
   And  -> @scope.message == "X to move"
-  And  -> expect(@scope.board).toBeDefined()
+  And  -> expect(@board).toBeDefined()
 
-  Invariant -> @scope.board.length == 9
+  Invariant -> @board.length == 9
 
   # TODO: smells of an implementation detail
   describe "board is a flattened 3x3 grid with algebraic notation", ->
-    When  -> @square = @scope.board[@index]
+    When  -> @square = @board[@index]
 
     describe "top-left", ->
       Given -> @index = 0
@@ -29,7 +31,7 @@ describe "controller: GameController", ->
 
   describe "#mark()", ->
     Given -> @index = 0
-    Given -> @square = @scope.board[@index]
+    Given -> @square = @board[@index]
 
     When  -> @scope.mark(@square)
 
@@ -66,9 +68,9 @@ describe "controller: GameController", ->
                XOO
                OX_"
       for mark, i in setup.replace /\s/g, ""
-        @scope.board[i].mark = mark if mark != "_"
+        @board[i].mark = mark if mark != "_"
 
-    When  -> @scope.mark(@scope.board[8])
+    When  -> @scope.mark(@board[8])
 
     Then -> @scope.message == "Game Over: It's a Draw"
 
@@ -78,21 +80,21 @@ describe "controller: GameController", ->
                O__
                OOX"
       for mark, i in setup.replace /\s/g, ""
-        @scope.board[i].mark = mark if mark != "_"
+        @board[i].mark = mark if mark != "_"
 
     describe "3 across", ->
-      When  -> @scope.mark(@scope.board[1])
+      When  -> @scope.mark(@board[1])
       Then  -> @scope.message == "Winner: X"
 
       describe "keep playing", ->
-        Given -> @square = @scope.board[4]
+        Given -> @square = @board[4]
         When  -> @scope.mark(@square)
         Then  -> expect(@square.mark).toBeUndefined()
 
     describe "3 down", ->
-      When  -> @scope.mark(@scope.board[5])
+      When  -> @scope.mark(@board[5])
       Then  -> @scope.message == "Winner: X"
 
     describe "3 diagonal", ->
-      When  -> @scope.mark(@scope.board[4])
+      When  -> @scope.mark(@board[4])
       Then  -> @scope.message == "Winner: X"
