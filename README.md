@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/toolbear/noughts-and-crosses.png?branch=master)](https://travis-ci.org/toolbear/noughts-and-crosses)
 
-Built with Angular JS using [Lineman](http://www.linemanjs.com).
+Built with AngularJS using [Lineman](http://www.linemanjs.com).
 
 # Instructions
 
