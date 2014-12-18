@@ -8,7 +8,8 @@
       <li id="square-{{ square.id }}"
         class="square"
          title="{{ square.id }}"
-        ng-repeat="square in board"></li>
+        ng-repeat="square in board"
+        ng-click="mark(square)">{{ square.mark }}</li>
     </ul>
 
     <div class="row">

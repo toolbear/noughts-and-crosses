@@ -25,3 +25,9 @@ describe "controller: GameController", ->
     describe "bottom-right", ->
       Given -> @index = 8
       Then -> @square.id == 'c1'
+
+  describe "#mark()", ->
+    Given -> @index = 0
+    When  -> @square = @scope.board[@index]
+    When  -> @scope.mark(@square)
+    Then  -> @square.mark == cross
