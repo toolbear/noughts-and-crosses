@@ -59,3 +59,42 @@ describe "controller: GameController", ->
         Given -> @third_square = id: "c3"
         When  -> @scope.mark(@third_square)
         Then  -> @third_square.mark == "X"
+
+  describe "game ends in a draw", ->
+    Given ->
+      setup = "XOX
+               XOO
+               OX_"
+      for mark, i in setup.replace /\s/g, ""
+        @scope.board[i].mark = mark if mark != "_"
+
+    When  -> @scope.mark(@scope.board[8])
+
+    Then -> @scope.message == "Game Over: It's a Draw"
+
+  describe "winning", ->
+    Given ->
+      setup = "X_X
+               O__
+               OOX"
+      for mark, i in setup.replace /\s/g, ""
+        @scope.board[i].mark = mark if mark != "_"
+
+    describe "3 across", ->
+      When  -> @scope.mark(@scope.board[1])
+      Then  -> @scope.message == "Winner: X"
+
+      describe "keep playing", ->
+        Given -> @square = @scope.board[4]
+        When  -> @scope.mark(@square)
+        Then  -> expect(@square.mark).toBeUndefined()
+
+    describe "3 down", ->
+      When  -> @scope.mark(@scope.board[5])
+      Then  -> @scope.message == "Winner: X"
+
+    describe "3 diagonal", ->
+      When  -> @scope.mark(@scope.board[4])
+      Then  -> @scope.message == "Winner: X"
+
+    xdescribe "full board"
