@@ -6,11 +6,11 @@ angular.module("app").controller('GameController', function(
   WINNING_PLAYS) {
 
   var detectWin, detectStalemate;
-  var game_over = false;
-  var current_player = 0;
-  var player_marks = [MARKS.cross, MARKS.nought];
+  var gameOver = false;
+  var currentPlayer = 0;
+  var playerMarks = [MARKS.cross, MARKS.nought];
   $scope.player = "Player One";
-  $scope.message = player_marks[current_player] + " to move";
+  $scope.message = playerMarks[currentPlayer] + " to move";
 
   $scope.board = _.flatten(_.map([3, 2, 1], function(file) {
     return _.map(['a', 'b', 'c'], function(rank) {
@@ -19,20 +19,20 @@ angular.module("app").controller('GameController', function(
   }));
 
   $scope.mark = function(square) {
-    if (!game_over && !square.mark) {
-      var mark = player_marks[current_player];
+    if (!gameOver && !square.mark) {
+      var mark = playerMarks[currentPlayer];
       square.mark = mark;
       $scope.log(mark + square.id);
 
       if (detectWin(mark)) {
         $scope.message = "Winner: " + mark;
-        game_over = true;
+        gameOver = true;
       } else if (detectStalemate()) {
         $scope.message = "Game Over: It's a Draw";
-        game_over = true;
+        gameOver = true;
       } else {
-        current_player = ++current_player % 2;
-        $scope.message = player_marks[current_player] + " to move"; // TODO: DRY with a template
+        currentPlayer = ++currentPlayer % 2;
+        $scope.message = playerMarks[currentPlayer] + " to move"; // TODO: DRY with a template
       }
     }
   };

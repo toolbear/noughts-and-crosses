@@ -48,17 +48,17 @@ describe "controller: GameController", ->
       And   -> expect(@log).not.toHaveBeenCalled()
 
     describe "switches to opponent mark", ->
-      Given -> @second_square = id: "c2"
+      Given -> @secondSquare = id: "c2"
 
-      When  -> @scope.mark(@second_square)
+      When  -> @scope.mark(@secondSquare)
 
-      Then  -> @second_square.mark == "O"
+      Then  -> @secondSquare.mark == "O"
       And   -> @scope.message = "X to move"
 
       describe "switches back to original player mark", ->
-        Given -> @third_square = id: "c3"
-        When  -> @scope.mark(@third_square)
-        Then  -> @third_square.mark == "X"
+        Given -> @thirdSquare = id: "c3"
+        When  -> @scope.mark(@thirdSquare)
+        Then  -> @thirdSquare.mark == "X"
 
   describe "game ends in a draw", ->
     Given ->
