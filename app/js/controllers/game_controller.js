@@ -8,9 +8,18 @@ angular.module("app").controller('GameController', function(
   var detectWin, detectStalemate;
   var gameOver = false;
   var currentPlayer = 0;
-  var playerMarks = [MARKS.cross, MARKS.nought];
-  $scope.player = "Player One";
-  $scope.message = playerMarks[currentPlayer] + " to move";
+  var players = [
+    {
+      name: "Player One",
+      mark: MARKS.cross
+    },
+    {
+      name: "Player Two",
+      mark: MARKS.nought
+    }
+  ];
+  $scope.player = players[0].name;
+  $scope.message = players[0].mark + " to move";
 
   $scope.board = _.flatten(_.map([3, 2, 1], function(file) {
     return _.map(['a', 'b', 'c'], function(rank) {
@@ -20,7 +29,7 @@ angular.module("app").controller('GameController', function(
 
   $scope.mark = function(square) {
     if (!gameOver && !square.mark) {
-      var mark = playerMarks[currentPlayer];
+      var mark = players[currentPlayer].mark;
       square.mark = mark;
       $scope.log(mark + square.id);
 
@@ -32,7 +41,7 @@ angular.module("app").controller('GameController', function(
         gameOver = true;
       } else {
         currentPlayer = ++currentPlayer % 2;
-        $scope.message = playerMarks[currentPlayer] + " to move"; // TODO: DRY with a template
+        $scope.message = players[currentPlayer].mark + " to move"; // TODO: DRY with a template
       }
     }
   };
