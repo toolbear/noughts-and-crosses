@@ -1,18 +1,16 @@
 describe "controller: GameController", ->
 
-  # TODO: DRY with src
-  cross  = "\u2573"
-  nought = "\u25ef"
-
   Given -> module("app")
 
-  Given inject ($controller, $rootScope) ->
+  Given inject ($controller, $rootScope, MARKS) ->
     @scope    = $rootScope.$new()
     @log = @scope.log = jasmine.createSpy("#log")
-    $controller('GameController', {$scope: @scope})
+    MARKS.nought = "O"
+    MARKS.cross  = "X"
+    $controller('GameController', {$scope: @scope, MARKS})
 
   Then -> @scope.player == "Player One"
-  And  -> @scope.message == "#{cross} to move"
+  And  -> @scope.message == "X to move"
   And  -> expect(@scope.board).toBeDefined()
 
   Invariant -> @scope.board.length == 9
@@ -35,15 +33,15 @@ describe "controller: GameController", ->
 
     When  -> @scope.mark(@square)
 
-    Then  -> @square.mark == cross
-    And   -> expect(@log).toHaveBeenCalledWith("\u2573a3")
+    Then  -> @square.mark == "X"
+    And   -> expect(@log).toHaveBeenCalledWith("Xa3")
 
     describe "already marked", ->
-      Given -> @square.mark = cross
+      Given -> @square.mark = "X"
       Then  -> expect(@log).not.toHaveBeenCalled()
 
     describe "marked by opponent", ->
-      Given -> @square.mark = nought
+      Given -> @square.mark = "O"
 
-      Then  -> @square.mark == nought
+      Then  -> @square.mark == "O"
       And   -> expect(@log).not.toHaveBeenCalled()
