@@ -1,6 +1,6 @@
 angular.module("app").controller('GameController', function($scope, $location, AuthenticationService, MARKS) {
 
-  var detectDraws;
+  var detectWin, detectStalemate;
   var current_player = 0;
   var player_marks = [MARKS.cross, MARKS.nought];
   $scope.player = "Player One";
@@ -18,7 +18,9 @@ angular.module("app").controller('GameController', function($scope, $location, A
       square.mark = mark;
       $scope.log(mark + square.id);
 
-      if (isStalemate()) {
+      if (detectWin(mark)) {
+        $scope.message = "Winner: " + mark;
+      } else if (detectStalemate()) {
         $scope.message = "Game Over: It's a Draw";
       } else {
         current_player = ++current_player % 2;
@@ -27,8 +29,24 @@ angular.module("app").controller('GameController', function($scope, $location, A
     }
   };
 
+  detectWin = function(mark) {
+    var mine = _($scope.board).chain().filter(function(square) {
+      return square.mark === mark;
+    }).map(function(square) {
+      return square.id;
+    }).value();
+    var winning = [
+      ["a1", "b1", "c1"],
+      ["a2", "b2", "c2"],
+      ["a3", "b3", "c3"],
+    ];
+    return _(winning).detect(function(candidate) {
+      return _.intersection(mine, candidate).length === 3;
+    });
+  };
+
   /** assumption: winner detection found no winner */
-  isStalemate = function() {
+  detectStalemate = function() {
     return !_($scope.board).detect(function(square) {
      return !square.mark; // true if unmarked
     });

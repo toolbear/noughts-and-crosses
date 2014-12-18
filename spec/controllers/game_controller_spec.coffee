@@ -62,12 +62,30 @@ describe "controller: GameController", ->
 
   describe "game ends in a draw", ->
     Given ->
-      # XOX
-      # XOO
-      # OX_
-      for mark, i in "XOXXOOOX_"
+      setup = "XOX
+               XOO
+               OX_"
+      for mark, i in setup.replace /\s/g, ""
         @scope.board[i].mark = mark if mark != "_"
 
     When  -> @scope.mark(@scope.board[8])
 
     Then -> @scope.message == "Game Over: It's a Draw"
+
+  describe "winning", ->
+    Given ->
+      setup = "X_X
+               O__
+               OOX"
+      for mark, i in setup.replace /\s/g, ""
+        @scope.board[i].mark = mark if mark != "_"
+
+    describe "3 across", ->
+      When  -> @scope.mark(@scope.board[1])
+      Then  -> @scope.message == "Winner: X"
+
+    xdescribe "3 down"
+
+    xdescribe "3 diagonal"
+
+    xdescribe "full board"
