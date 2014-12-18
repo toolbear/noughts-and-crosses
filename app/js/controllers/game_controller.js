@@ -1,6 +1,7 @@
 angular.module("app").controller('GameController', function($scope, $location, AuthenticationService, MARKS) {
 
   var detectWin, detectStalemate;
+  var game_over = false;
   var current_player = 0;
   var player_marks = [MARKS.cross, MARKS.nought];
   $scope.player = "Player One";
@@ -13,15 +14,17 @@ angular.module("app").controller('GameController', function($scope, $location, A
   }));
 
   $scope.mark = function(square) {
-    if (!square.mark) {
+    if (!game_over && !square.mark) {
       var mark = player_marks[current_player];
       square.mark = mark;
       $scope.log(mark + square.id);
 
       if (detectWin(mark)) {
         $scope.message = "Winner: " + mark;
+        game_over = true;
       } else if (detectStalemate()) {
         $scope.message = "Game Over: It's a Draw";
+        game_over = true;
       } else {
         current_player = ++current_player % 2;
         $scope.message = player_marks[current_player] + " to move"; // TODO: DRY with a template

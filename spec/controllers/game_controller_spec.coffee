@@ -84,6 +84,12 @@ describe "controller: GameController", ->
       When  -> @scope.mark(@scope.board[1])
       Then  -> @scope.message == "Winner: X"
 
+      describe "keep playing", ->
+        Given -> @square = @scope.board[4]
+        When  -> @scope.mark(@square)
+        Then  -> expect(@square.mark).toBeUndefined()
+
+
     xdescribe "3 down"
 
     xdescribe "3 diagonal"
