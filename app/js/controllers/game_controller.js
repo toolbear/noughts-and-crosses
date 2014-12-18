@@ -19,7 +19,9 @@ angular.module("app").controller('GameController', function($scope, $location, A
   }));
 
   $scope.mark = function(square) {
-    square.mark = cross;
+    var mark = cross;
+    square.mark = mark;
+    $scope.log(mark + square.id);
   };
 
   var onLogoutSuccess = function(response) {

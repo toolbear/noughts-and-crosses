@@ -6,6 +6,7 @@ describe "controller: GameController", ->
 
   Given inject ($controller, $rootScope) ->
     @scope    = $rootScope.$new()
+    @log = @scope.log = jasmine.createSpy("#log")
     $controller('GameController', {$scope: @scope})
 
   Then -> @scope.player == "Player One"
@@ -28,6 +29,9 @@ describe "controller: GameController", ->
 
   describe "#mark()", ->
     Given -> @index = 0
+
     When  -> @square = @scope.board[@index]
     When  -> @scope.mark(@square)
+
     Then  -> @square.mark == cross
+    And   -> expect(@log).toHaveBeenCalledWith("\u2573a3")
