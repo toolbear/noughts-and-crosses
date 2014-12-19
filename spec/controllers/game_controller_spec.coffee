@@ -2,13 +2,18 @@ describe "controller: GameController", ->
 
   Given -> module("app")
 
-  Given inject ($controller, $rootScope, PLAYERS) ->
-    @scope       = $rootScope.$new()
-    @log         = @scope.log = jasmine.createSpy("#log")
+  Given inject ($controller, $rootScope, $timeout, PLAYERS, SuggestionService) ->
+    @scope         = $rootScope.$new()
+    @log           = @scope.log = jasmine.createSpy("#log")
+    @$timeout      = $timeout
+    @suggestSquare = spyOn(SuggestionService, "suggestSquare")
+
     PLAYERS[0].mark = "X"
     PLAYERS[1].mark = "O"
-    PLAYERS[1].bot = false;
-    $controller('GameController', {$scope: @scope})
+    PLAYERS[1].bot = false
+    @playerTwo = PLAYERS[1]
+
+    $controller('GameController', {$scope: @scope, SuggestionService})
 
   Given -> @board = @scope.board
 
@@ -60,6 +65,23 @@ describe "controller: GameController", ->
         Given -> @thirdSquare = id: "c3"
         When  -> @scope.mark(@thirdSquare)
         Then  -> @thirdSquare.mark == "X"
+
+    describe "bot makes next move", ->
+      Given -> @playerTwo.bot = true
+      Given -> @suggestion = @board[1]
+      Given -> @suggestSquare.andReturn(@suggestion)
+
+      Then  -> expect(@suggestSquare).toHaveBeenCalledWith("O", @board)
+      Then "doesn't mark immediately", ->
+        expect(@suggestion.mark).toBeUndefined()
+
+      describe "waits a bit then marks the suggested square", ->
+        When  -> @$timeout.flush()
+        Then  -> @suggestion.mark == "O"
+
+      describe "no moves while waiting on bot", ->
+        When  -> @scope.mark(@board[8])
+        Then  -> expect(@board[8].mark).toBeUndefined()
 
   describe "game ends in a draw", ->
     Given ->
