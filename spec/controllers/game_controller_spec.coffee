@@ -2,12 +2,13 @@ describe "controller: GameController", ->
 
   Given -> module("app")
 
-  Given inject ($controller, $rootScope, MARKS) ->
+  Given inject ($controller, $rootScope, PLAYERS) ->
     @scope       = $rootScope.$new()
     @log         = @scope.log = jasmine.createSpy("#log")
-    MARKS.nought = "O"
-    MARKS.cross  = "X"
-    $controller('GameController', {$scope: @scope, MARKS})
+    PLAYERS[0].mark = "X"
+    PLAYERS[1].mark = "O"
+    PLAYERS[1].bot = false;
+    $controller('GameController', {$scope: @scope})
 
   Given -> @board = @scope.board
 

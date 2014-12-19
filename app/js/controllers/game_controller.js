@@ -4,26 +4,15 @@ angular.module("app").controller('GameController', function(
   $timeout,
   AuthenticationService,
   SuggestionService,
-  MARKS,
+  PLAYERS,
   WINNING_PLAYS) {
 
   var detectWin, detectStalemate, markSquare;
   var gameOver = false;
   var thinking = false;
   var currentPlayer = 0;
-  var players = [
-    {
-      name: "Player One",
-      mark: MARKS.cross
-    },
-    {
-      name: "Computer",
-      mark: MARKS.nought,
-      bot: true
-    }
-  ];
-  $scope.player = players[0].name;
-  $scope.message = players[0].mark + " to move";
+  $scope.player = PLAYERS[0].name;
+  $scope.message = PLAYERS[0].mark + " to move";
 
   $scope.board = _.flatten(_.map([3, 2, 1], function(file) {
     return _.map(['a', 'b', 'c'], function(rank) {
@@ -38,7 +27,7 @@ angular.module("app").controller('GameController', function(
   };
 
   markSquare = function(square) {
-    var mark = players[currentPlayer].mark;
+    var mark = PLAYERS[currentPlayer].mark;
     square.mark = mark;
     $scope.log(mark + square.id);
 
@@ -50,7 +39,7 @@ angular.module("app").controller('GameController', function(
       gameOver = true;
     } else {
       currentPlayer = ++currentPlayer % 2;
-      var player = players[currentPlayer];
+      var player = PLAYERS[currentPlayer];
       $scope.message = player.mark + " to move"; // TODO: DRY with a template
       if (player.bot) {
         var suggested = SuggestionService.suggestSquare(player.mark, $scope.board);
@@ -91,15 +80,20 @@ angular.module("app").controller('GameController', function(
     AuthenticationService.logout().success(onLogoutSuccess);
   };
 });
-angular.module("app").constant('MARKS', {
-  nought: "\u25ef",
-  cross: "\u2573"
-});
 // FIXME: Chrome, Y U NO LIKE EMOJI?
-angular.module("app").constant('xxMARKS', {
-  nought: "\u2b55",
-  cross: "\u274c"
-});
+angular.module("app").constant('PLAYERS', [
+  {
+    name: "Player One",
+    mark: "\u2573"
+    //mark: "\u274c"
+  },
+  {
+    name: "Computer",
+    mark: "\u25ef",
+    //mark: "\u2b55"
+    bot: true
+  }
+]);
 angular.module("app").constant('WINNING_PLAYS', [
   ["a3", "b3", "c3"],
   ["a2", "b2", "c2"],
