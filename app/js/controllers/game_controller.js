@@ -1,12 +1,15 @@
 angular.module("app").controller('GameController', function(
   $scope,
   $location,
+  $timeout,
   AuthenticationService,
+  SuggestionService,
   MARKS,
   WINNING_PLAYS) {
 
-  var detectWin, detectStalemate;
+  var detectWin, detectStalemate, markSquare;
   var gameOver = false;
+  var thinking = false;
   var currentPlayer = 0;
   var players = [
     {
@@ -14,8 +17,9 @@ angular.module("app").controller('GameController', function(
       mark: MARKS.cross
     },
     {
-      name: "Player Two",
-      mark: MARKS.nought
+      name: "Computer",
+      mark: MARKS.nought,
+      bot: true
     }
   ];
   $scope.player = players[0].name;
@@ -28,20 +32,35 @@ angular.module("app").controller('GameController', function(
   }));
 
   $scope.mark = function(square) {
-    if (!gameOver && !square.mark) {
-      var mark = players[currentPlayer].mark;
-      square.mark = mark;
-      $scope.log(mark + square.id);
+    if (!thinking && !gameOver && !square.mark) {
+      markSquare(square);
+    }
+  };
 
-      if (detectWin(mark)) {
-        $scope.message = "Winner: " + mark;
-        gameOver = true;
-      } else if (detectStalemate()) {
-        $scope.message = "Game Over: It's a Draw";
-        gameOver = true;
-      } else {
-        currentPlayer = ++currentPlayer % 2;
-        $scope.message = players[currentPlayer].mark + " to move"; // TODO: DRY with a template
+  markSquare = function(square) {
+    var mark = players[currentPlayer].mark;
+    square.mark = mark;
+    $scope.log(mark + square.id);
+
+    if (detectWin(mark)) {
+      $scope.message = "Winner: " + mark;
+      gameOver = true;
+    } else if (detectStalemate()) {
+      $scope.message = "Game Over: It's a Draw";
+      gameOver = true;
+    } else {
+      currentPlayer = ++currentPlayer % 2;
+      var player = players[currentPlayer];
+      $scope.message = player.mark + " to move"; // TODO: DRY with a template
+      if (player.bot) {
+        var suggested = SuggestionService.suggestSquare(player.mark, $scope.board);
+        if (suggested) {
+          thinking = true;
+          $timeout(function() {
+            markSquare(suggested);
+            thinking = false;
+          }, 400);
+        }
       }
     }
   };
